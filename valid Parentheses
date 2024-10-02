@@ -1,0 +1,39 @@
+#include <iostream>
+#include <stack>
+#include <unordered_map>
+
+bool isValid(const std::string &s) {
+    std::stack<char> stack;
+    std::unordered_map<char, char> bracket_map = {
+        {')', '('},
+        {'}', '{'},
+        {']', '['}
+    };
+
+    for (char ch : s) {
+        // If it's a closing bracket
+        if (bracket_map.find(ch) != bracket_map.end()) {
+            // Check if the stack is empty or if the top doesn't match
+            if (stack.empty() || stack.top() != bracket_map[ch]) {
+                return false;
+            }
+            stack.pop(); // Valid match, pop the top
+        } else {
+            // If it's an opening bracket, push it onto the stack
+            stack.push(ch);
+        }
+    }
+
+    // If the stack is empty, all brackets were matched
+    return stack.empty();
+}
+
+int main() {
+    std::string input = "{[()]}";
+    if (isValid(input)) {
+        std::cout << "Valid parentheses" << std::endl;
+    } else {
+        std::cout << "Invalid parentheses" << std::endl;
+    }
+    return 0;
+}
